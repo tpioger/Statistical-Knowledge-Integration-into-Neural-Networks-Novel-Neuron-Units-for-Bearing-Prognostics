@@ -83,7 +83,7 @@ print(f"Mae : {np.mean(mae_list)} +- {np.std(mae_list)}")
 save = True
 if save:
     for i in range(len(prediction_list)):
-        with open(f'predictions/SFE/prediction_single_features_{epochs}_epochs_slicing_{slicing}_bearing_{i+1}_rerun_5.npy', 'wb') as f:
+        with open(f'predictions/SFE/prediction_single_features_{epochs}_epochs_slicing_{slicing}_bearing_{i+1}.npy', 'wb') as f:
             np.save(f, prediction_list[i])
 
 
