@@ -77,7 +77,7 @@ save = True
 
 if save:
     for i in range(len(prediction_list)):
-        with open(f'predictions/baseline/baseline_{params["epochs"]}_epochs_slicing_{params["slicing"]}_bearing_{i+1}_rerun_5.npy', 'wb') as f:
+        with open(f'predictions/baseline/baseline_{params["epochs"]}_epochs_slicing_{params["slicing"]}_bearing_{i+1}.npy', 'wb') as f:
             np.save(f, prediction_list[i])
 # Save true RUL
 
