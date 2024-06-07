@@ -79,5 +79,5 @@ print(f"Mae : {np.mean(mae_list)} +- {np.std(mae_list)}")
 save = True
 if save:
     for i in range(len(prediction_list)):
-        with open(f'predictions/WMFE/prediction_multiple_features_bias_{params["epochs"]}_epochs_slicing_{params["slicing"]}_bearing_{i+1}_rerun_2.npy', 'wb') as f:
+        with open(f'predictions/WMFE/prediction_multiple_features_bias_{params["epochs"]}_epochs_slicing_{params["slicing"]}_bearing_{i+1}.npy', 'wb') as f:
             np.save(f, prediction_list[i])
