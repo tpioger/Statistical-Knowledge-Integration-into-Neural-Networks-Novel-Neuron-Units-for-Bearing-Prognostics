@@ -1,6 +1,6 @@
 from tensorflow import keras
+import tensorflow as tf
 import layers
-
 
 def dense_baseline_model():
     """
@@ -16,12 +16,35 @@ def dense_baseline_model():
     x = keras.layers.Dense(64, activation="relu", name="first_hidden_layer")(inputs)
     x = keras.layers.Dense(64, activation="relu", name="second_hidden_layer")(x)
 
+
+
     outputs = keras.layers.Dense(1, name="outputs")(x)
 
     return keras.Model(inputs=inputs, outputs=outputs, name="Baseline_dense")
 
 
-def model_custom_layer_dense(input_shape=500, unit_custom=500):
+def dense_rnn_model(sequence_length):
+    """
+    Baseline Model RNN for RUL prediction
+
+    Returns
+    -------
+    model: tensorflow model
+        Tenssorflow model.
+
+    """
+    inputs = keras.Input(shape=(sequence_length, 18), name="inputs")
+    x = keras.layers.LSTM(64, return_sequences=False, name="First_LSTM_layer")(inputs)
+    x = keras.layers.Dense(32, activation="relu")(x)
+    x = keras.layers.Dense(16, activation="relu")(x)
+    outputs = keras.layers.Dense(1, name="predictions_rnn")(x)
+
+    return keras.Model(inputs=inputs, outputs=outputs, name="Baseline_rnn")
+
+
+
+
+def SFE(input_shape=500, unit_custom=500):
     """
     Build a model with a custom layer, in this case a layer that extract the maximum value
 
@@ -59,11 +82,11 @@ def model_custom_layer_dense(input_shape=500, unit_custom=500):
     kurt = layers.SuperKurtosis(unit_custom)(inputs)
 
     # frequency
-    magnitude = layers.SuperFft(unit_custom)(inputs)
+    fft = layers.SuperFft(unit_custom)(inputs)
     # magnitude = layers.SuperAmplitude(unit_custom)(fft)
-    pmm = layers.PmmLayer(unit_custom)(magnitude)
+    pmm = layers.PmmLayer(unit_custom)(fft)
 
-    power_spectrum = layers.PowerSpectrumLayer(unit_custom)(magnitude)
+    power_spectrum = layers.PowerSpectrumLayer(unit_custom)(fft)
     frequency_max = layers.SuperMaximum(unit_custom)(power_spectrum)
     frequency_mean = layers.SuperMean(unit_custom)(power_spectrum)
     frequency_var = layers.SuperVariance(unit_custom)(power_spectrum)
@@ -79,7 +102,6 @@ def model_custom_layer_dense(input_shape=500, unit_custom=500):
     outputs = keras.layers.Dense(1)(x)
 
     return keras.Model(inputs=inputs, outputs=outputs)
-
 
 
 def model_custom_block_stat(input_shape=500,unit_custom=500,use_bias=False):
